@@ -10,6 +10,10 @@ Block::Block(BlockColor block_col, BlockCoords coords) :
 	
 }
 
+void Block::move_block_down() {
+
+	position_offset.y += BLOCK_HEIGHT;
+}
 
 void Block::pos_to_grid() {
 

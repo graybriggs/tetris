@@ -4,7 +4,8 @@
 
 #include "timer.h"
 
-Timer::Timer(void (*func)(), float duration, bool repeated) :
+//Timer::Timer(void (*func)(), float duration, bool repeated) :
+Timer::Timer(std::function<void()> func, float duration, bool repeated) :
 	func(func), duration(duration), repeated(repeated),
 	active(false),
 	start_time(0),

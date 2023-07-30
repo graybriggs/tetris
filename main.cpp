@@ -5,6 +5,7 @@
 #include <ctime>
 #include <iostream>
 #include <memory>
+#include <utility>
 
 #include "block.h"
 #include "grid.h"
@@ -52,7 +53,8 @@ int main(int argc, char* args[]) {
 	float frameStart = SDL_GetTicks();
 
 
-	Timer timer(foo, 500, true);
+	//Timer timer(foo, 800, true);
+	Timer timer(std::bind(&Shapes::move_down, &s), 800, true);
 	timer.start_timer();
 
 	while (!done) {
@@ -69,11 +71,11 @@ int main(int argc, char* args[]) {
 		if (accumulator > 0.2f)
 			accumulator = 0.2f;
 
-		timer.update();
+		
 		while (accumulator > dt) {
 
 			// logic
-			
+			timer.update();
 
 			accumulator -= dt;
 

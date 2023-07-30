@@ -1,5 +1,5 @@
 
-
+#include <iostream>
 #include "shapes.h"
 
 void Shapes::init_blocks() {
@@ -45,6 +45,12 @@ void Shapes::init_blocks() {
 
 
 void Shapes::move_down() {
+
+	std::cout << "test" << std::endl;
+
+	for (auto& b : tshape) {
+		b.move_block_down();
+	}
 
 }
 

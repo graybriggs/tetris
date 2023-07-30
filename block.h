@@ -14,6 +14,7 @@ public:
 
 	Block(BlockColor block_col, BlockCoords pos);
 
+	void move_block_down();
 	void pos_to_grid();
 
 	void render_block(SDL_Renderer*);

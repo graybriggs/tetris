@@ -1,9 +1,11 @@
 #pragma once
 
+#include <functional>
 
 class Timer {
 public:
-	Timer(void (*func)(), float duration, bool repeated);
+	//Timer(void (*func)(), float duration, bool repeated);
+	Timer(std::function<void()>, float duration, bool repeated);
 
 	void start_timer();
 	void stop_timer();
@@ -11,7 +13,8 @@ public:
 	void update();
 
 private:
-	void (*func)();
+	//void (*func)();
+	std::function<void()> func;
 
 	float duration;
 	bool repeated;
