@@ -71,19 +71,19 @@ void Shapes::init_blocks() {
 	
 
 	if (current_selected_shape == Shape::SQUARE) {
-		std::copy(std::begin(square), std::end(square), std::back_inserter(current_shape_block));
+		std::copy(std::begin(square), std::end(square), std::back_inserter(current_shape_blocks));
 	}
 	else if (current_selected_shape == Shape::LEFT_LSHAPE) {
-		std::copy(std::begin(left_lshape), std::end(left_lshape), std::back_inserter(current_shape_block));
+		std::copy(std::begin(left_lshape), std::end(left_lshape), std::back_inserter(current_shape_blocks));
 	}
 	else if (current_selected_shape == Shape::RIGHT_LSHAPE) {
-		std::copy(std::begin(right_lshape), std::end(right_lshape), std::back_inserter(current_shape_block));
+		std::copy(std::begin(right_lshape), std::end(right_lshape), std::back_inserter(current_shape_blocks));
 	}
 	else if (current_selected_shape == Shape::LINE) {
-		std::copy(std::begin(line), std::end(line), std::back_inserter(current_shape_block));
+		std::copy(std::begin(line), std::end(line), std::back_inserter(current_shape_blocks));
 	}
 	else if (current_selected_shape == Shape::TSHAPE) {
-		std::copy(std::begin(tshape), std::end(tshape), std::back_inserter(current_shape_block));
+		std::copy(std::begin(tshape), std::end(tshape), std::back_inserter(current_shape_blocks));
 	}
 }
 
@@ -91,21 +91,21 @@ void Shapes::init_blocks() {
 
 void Shapes::move_down() {
 
-	for (auto& b : current_shape_block) {
+	for (auto& b : current_shape_blocks) {
 		b.update_position_offset(0, 1);
 	}
 }
 
 void Shapes::move_left() {
 
-	for (auto& b : current_shape_block) {
+	for (auto& b : current_shape_blocks) {
 		b.update_position_offset(-1, 0);
 	}
 }
 
 void Shapes::move_right() {
 
-	for (auto& b : current_shape_block) {
+	for (auto& b : current_shape_blocks) {
 		b.update_position_offset(1, 0);
 	}
 }
@@ -115,6 +115,53 @@ void Shapes::rotate_shape() {
 	rotation_num++;
 	if (rotation_num > 4) {
 		rotation_num = 0;
+	}
+	// square - do nothing
+	if (current_selected_shape == Shape::LEFT_LSHAPE) {
+
+	}
+	else if (current_selected_shape == Shape::RIGHT_LSHAPE) {
+
+	}
+	else if (current_selected_shape == Shape::LINE) {
+		if (rotation_num == 0 || rotation_num == 2) {
+			current_shape_blocks[0].set_blockcoords(BlockCoords(0, -1));
+			current_shape_blocks[1].set_blockcoords(BlockCoords(0, 0));
+			current_shape_blocks[2].set_blockcoords(BlockCoords(0, 1));
+			current_shape_blocks[3].set_blockcoords(BlockCoords(0, 2));
+		}
+		else {
+			current_shape_blocks[0].set_blockcoords(BlockCoords(-2, 0));
+			current_shape_blocks[1].set_blockcoords(BlockCoords(-1, 0));
+			current_shape_blocks[2].set_blockcoords(BlockCoords(-0, 0));
+			current_shape_blocks[3].set_blockcoords(BlockCoords(1, 0));
+		}
+	}
+	else if (current_selected_shape == Shape::TSHAPE) {
+		if (rotation_num == 0) {
+			current_shape_blocks[0].set_blockcoords(BlockCoords(0, -1));
+			current_shape_blocks[1].set_blockcoords(BlockCoords(-1, 0));
+			current_shape_blocks[2].set_blockcoords(BlockCoords(0, 0));
+			current_shape_blocks[3].set_blockcoords(BlockCoords(1, 0));
+		}
+		else if (rotation_num == 1) {
+			current_shape_blocks[0].set_blockcoords(BlockCoords(0, 0));
+			current_shape_blocks[1].set_blockcoords(BlockCoords(0, 0));
+			current_shape_blocks[2].set_blockcoords(BlockCoords(1, 0));
+			current_shape_blocks[3].set_blockcoords(BlockCoords(0, 0));
+		}
+		else if (rotation_num == 2) {
+			current_shape_blocks[0].set_blockcoords(BlockCoords(0, 1));
+			current_shape_blocks[1].set_blockcoords(BlockCoords(-1, 0));
+			current_shape_blocks[2].set_blockcoords(BlockCoords(0, 0));
+			current_shape_blocks[3].set_blockcoords(BlockCoords(1, 0));
+		}
+		else if (rotation_num == 3) {
+			current_shape_blocks[0].set_blockcoords(BlockCoords(0, 0));
+			current_shape_blocks[1].set_blockcoords(BlockCoords(0, 0));
+			current_shape_blocks[2].set_blockcoords(BlockCoords(-1, 0));
+			current_shape_blocks[3].set_blockcoords(BlockCoords(0, 0));
+		}
 	}
 }
 
@@ -131,37 +178,9 @@ Shape& Shapes::get_current_selected_shape() {
 
 void Shapes::render_shape(SDL_Renderer* renderer) {
 
-	switch (current_selected_shape) {
-	case Shape::SQUARE:
-		for (auto& b : square) {
-			b.pos_to_grid();
-			b.render_block(renderer);
-		}
-		break;
-	case Shape::LEFT_LSHAPE:
-		for (auto& b : left_lshape) {
-			b.pos_to_grid();
-			b.render_block(renderer);
-		}
-		break;
-	case Shape::RIGHT_LSHAPE:
-		for (auto& b : right_lshape) {
-			b.pos_to_grid();
-			b.render_block(renderer);
-		}
-		break;
-	case Shape::LINE:
-		for (auto& b : line) {
-			b.pos_to_grid();
-			b.render_block(renderer);
-		}
-		break;
-	case Shape::TSHAPE:
-		for (auto& b : tshape) {
-			b.pos_to_grid();
-			b.render_block(renderer);
-		}
-		break;
+	for (auto& b : current_shape_blocks) {
+		b.pos_to_grid();
+		b.render_block(renderer);
 	}
 
 }
