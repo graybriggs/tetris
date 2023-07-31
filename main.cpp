@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "block.h"
+#include "game.h"
 #include "grid.h"
 #include "globals.h"
 #include "shapes.h"
@@ -34,14 +35,8 @@ int main(int argc, char* args[]) {
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, rendererFlags);
 
 
-	auto grid = std::make_unique<Grid>();
-	BlockCoords c;
-	c.x = 1;
-	c.y = 1;
-	Block b(Block::BlockColor::RED, c);
-
-	Shapes s;
-	s.init_blocks();
+	auto game = std::make_unique<Game>();
+	game->init_game();
 
 	bool done = false;
 
@@ -53,9 +48,6 @@ int main(int argc, char* args[]) {
 	float frameStart = SDL_GetTicks();
 
 
-	//Timer timer(foo, 800, true);
-	Timer timer(std::bind(&Shapes::move_down, &s), 800, true);
-	timer.start_timer();
 
 	while (!done) {
 		const float currentTime = SDL_GetTicks();
@@ -66,6 +58,8 @@ int main(int argc, char* args[]) {
 			if (event.type == SDL_QUIT) {
 				done = true;
 			}
+
+			game->input(event);
 		}
 
 		if (accumulator > 0.2f)
@@ -75,7 +69,7 @@ int main(int argc, char* args[]) {
 		while (accumulator > dt) {
 
 			// logic
-			timer.update();
+			game->update(dt);
 
 			accumulator -= dt;
 
@@ -84,13 +78,7 @@ int main(int argc, char* args[]) {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black
 		SDL_RenderClear(renderer);
 
-
-		//b.pos_to_grid();
-		//b.render_block(renderer);
-		s.render_shape(renderer, Shapes::Shape::TSHAPE);
-
-
-		grid->render_grid(renderer);
+		game->render(renderer);
 
 		SDL_RenderPresent(renderer);
 
