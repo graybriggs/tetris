@@ -5,7 +5,7 @@
 #include "timer.h"
 
 //Timer::Timer(void (*func)(), float duration, bool repeated) :
-Timer::Timer(std::function<void()> func, float duration, bool repeated) :
+Timer::Timer(std::function<void()> func, float duration, bool repeated = false) :
 	func(func), duration(duration), repeated(repeated),
 	active(false),
 	start_time(0),
@@ -34,7 +34,9 @@ void Timer::update() {
 	if (active) {
 		if (current_time - start_time > duration) {
 			// do something (function pointer?)
-			func();
+			if (func) {
+				func();
+			}
 
 			if (repeated) {
 				reset_timer();
@@ -44,4 +46,8 @@ void Timer::update() {
 			}
 		}
 	}
+}
+
+bool Timer::is_active() {
+	return active;
 }
