@@ -19,13 +19,16 @@ public:
 	void init_blocks();
 	//Shape make_shape(Shape);
 	void move_down();
+	void move_up();
 	void move_left();
 	void move_right();
+	void move_horizontal(int amount);
 
 	void rotate_shape();
 	void set_current_selected_shape(Shape);
 	//Shape& get_current_selected_shape();
 	std::vector<Block> get_current_shape();
+
 
 	void render_shape(SDL_Renderer*);
 
@@ -35,7 +38,7 @@ private:
 
 	// current selected shape
 	Shape current_selected_shape;
-	std::vector<Block> current_shape_block;
+	std::vector<Block> current_shape_blocks;
 
 	//std::array<Block, 4> shape;
 	std::vector<Block> square;

@@ -15,9 +15,9 @@ public:
 	Game();
 	void init_game();
 	void input(SDL_Event event);
+	void collision();
 	void update(float dt);
 	void render(SDL_Renderer* renderer);
-
 
 private:
 	std::unique_ptr<Grid> grid;

@@ -1,12 +1,18 @@
 
 #include "block.h"
 
+Block::Block() :
+	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
+	block_color(BlockColor::EMPTY),
+	block_pos(0,0)
+{
+}
+
 Block::Block(BlockCoords coords) :
 	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
 	block_color(BlockColor::EMPTY),
 	block_pos(coords)
 {
-
 }
 
 Block::Block(BlockColor block_col, BlockCoords coords) :
@@ -16,58 +22,38 @@ Block::Block(BlockColor block_col, BlockCoords coords) :
 {
 }
 
-void Block::update_position_offset(int x, int y) {
-	
-	block_pos_offset.x += x;
-	block_pos_offset.y += y;
-}
-
-void Block::blockspace_to_gridspace() {
-
-	box.x = block_pos.x * BLOCK_WIDTH + block_pos_offset.x * BLOCK_WIDTH;
-	box.y = block_pos.y * BLOCK_HEIGHT + block_pos_offset.y * BLOCK_HEIGHT;
-	
+void Block::set_block_color(BlockColor bc) {
+	block_color = bc;
 }
 
 
-void Block::set_block_blockspace(int x, int y) {
-	block_pos.x = x;
-	block_pos.y = y;
 
-	box.x = block_pos.y * BLOCK_WIDTH;
-	box.y = block_pos.y * BLOCK_HEIGHT;
-	box.w = BLOCK_WIDTH;
-	box.h = BLOCK_HEIGHT;
-}
-
-void Block::set_block_blockspace(BlockCoords bc) {
-	block_pos.x = bc.x;
-	block_pos.y = bc.y;
-
-	box.x = block_pos.y * BLOCK_WIDTH;
-	box.y = block_pos.y * BLOCK_HEIGHT;
-	box.w = BLOCK_WIDTH;
-	box.h = BLOCK_HEIGHT;
-}
-
-SDL_Rect Block::get_block_gridspace() {
-	SDL_Rect r;
-	r.x = block_pos.x * BLOCK_WIDTH + block_pos_offset.x * BLOCK_WIDTH;
-	r.y = block_pos.y * BLOCK_HEIGHT + block_pos_offset.y * BLOCK_HEIGHT;
-	r.w = BLOCK_WIDTH;
-	r.h = BLOCK_HEIGHT;
-
-	return r;
-}
-
-BlockCoords Block::get_block_blockspace() {
-
+BlockCoords Block::get_block_pos() {
 	return block_pos;
 }
 
+void Block::set_block_pos(BlockCoords bc) {
+	block_pos.x = bc.x;
+	block_pos.y = bc.y;
+}
+
+void Block::set_block_pos(int x, int y) {
+	block_pos.x = x;
+	block_pos.y = y;
+}
+
+bool Block::horizontal_collision() {
+
+	if (block_pos.x <= 0 || block_pos.x > 10)
+		return true;
+	
+	return false;
+}
+
+
 void Block::render_block(SDL_Renderer* renderer) {
 
-	SDL_Rect r = get_block_gridspace();
+	SDL_Rect r = { block_pos.x * BLOCK_WIDTH, block_pos.y * BLOCK_HEIGHT, BLOCK_WIDTH, BLOCK_HEIGHT };
 
 	switch (block_color) {
 	case BlockColor::RED:
