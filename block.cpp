@@ -4,22 +4,24 @@
 Block::Block() :
 	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
 	block_color(BlockColor::EMPTY),
-	block_pos(0,0)
+	block_pos(BLOCK_OFFSET)
 {
 }
 
 Block::Block(BlockCoords coords) :
 	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
-	block_color(BlockColor::EMPTY),
-	block_pos(coords)
+	block_color(BlockColor::EMPTY)
 {
+	block_pos.x = coords.x + BLOCK_OFFSET.x;
+	block_pos.y = coords.y + BLOCK_OFFSET.y;
 }
 
 Block::Block(BlockColor block_col, BlockCoords coords) :
 	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
-	block_color(block_col),
-	block_pos(coords)
+	block_color(block_col)
 {
+	block_pos.x = coords.x + BLOCK_OFFSET.x;
+	block_pos.y = coords.y + BLOCK_OFFSET.y;
 }
 
 void Block::set_block_color(BlockColor bc) {
@@ -44,12 +46,19 @@ void Block::set_block_pos(int x, int y) {
 
 bool Block::horizontal_collision() {
 
-	if (block_pos.x <= 0 || block_pos.x > 10)
+	if (block_pos.x < 0 || block_pos.x > 10)
 		return true;
 	
 	return false;
 }
 
+bool Block::vertical_collision() {
+
+	if (block_pos.y > 18)
+		return true;
+
+	return false;
+}
 
 void Block::render_block(SDL_Renderer* renderer) {
 

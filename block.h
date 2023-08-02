@@ -23,6 +23,7 @@ public:
 	void set_block_pos(int x, int y);
 
 	bool horizontal_collision();
+	bool vertical_collision();
 
 	void render_block(SDL_Renderer*);
 

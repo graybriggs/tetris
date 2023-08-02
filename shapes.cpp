@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "grid.h"
 #include "shapes.h"
 
 Shapes::Shapes() :
@@ -49,45 +50,28 @@ void Shapes::init_blocks() {
 	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(0, 0)));
 	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(1, 0)));
 	
-	
-	int choice = rand() % 5;
-	if (choice == 0) {
-		current_selected_shape = Shape::SQUARE;
-		std::copy(std::begin(square), std::end(square), std::back_inserter(current_shape_blocks));
-	}
-	else if (choice == 1) {
-		current_selected_shape = Shape::LEFT_LSHAPE;
-		std::copy(std::begin(left_lshape), std::end(left_lshape), std::back_inserter(current_shape_blocks));
-	}
-	else if (choice == 2) {
-		current_selected_shape = Shape::RIGHT_LSHAPE;
-		std::copy(std::begin(right_lshape), std::end(right_lshape), std::back_inserter(current_shape_blocks));
-	}
-	else if (choice == 3) {
-		current_selected_shape = Shape::LINE;
-		std::copy(std::begin(line), std::end(line), std::back_inserter(current_shape_blocks));
-	}
-	else if (choice == 4) {
-		current_selected_shape = Shape::TSHAPE;
-		std::copy(std::begin(tshape), std::end(tshape), std::back_inserter(current_shape_blocks));
-	}
-	
+	get_next_shape();
 }
 
 void Shapes::move_down() {
-
-	for (auto& b : current_shape_blocks) {
-		BlockCoords bc = b.get_block_pos();
-		bc.y++;
-		b.set_block_pos(bc);
+	
+	if (!vertical_collision()) {
+		for (auto& b : current_shape_blocks) {
+			BlockCoords bc = b.get_block_pos();
+			bc.y++;
+			b.set_block_pos(bc);
+		}
+	}
+	else {
+		get_next_shape();
 	}
 }
 
 
 void Shapes::move_horizontal(int amount) {
 	
-	for (auto& b : current_shape_blocks) {
-		if (!b.horizontal_collision()) {
+	if (!horizontal_collision()) {
+		for (auto& b : current_shape_blocks) {
 			BlockCoords bc = b.get_block_pos();
 			bc.x += amount;
 			b.set_block_pos(bc);
@@ -113,7 +97,50 @@ std::vector<Block> Shapes::get_current_shape() {
 	return current_shape_blocks;
 }
 
+void Shapes::get_next_shape() {
 
+	int choice = rand() % 5;
+	if (choice == 0) {
+		current_selected_shape = Shape::SQUARE;
+		std::copy(std::begin(square), std::end(square), std::back_inserter(current_shape_blocks));
+	}
+	else if (choice == 1) {
+		current_selected_shape = Shape::LEFT_LSHAPE;
+		std::copy(std::begin(left_lshape), std::end(left_lshape), std::back_inserter(current_shape_blocks));
+	}
+	else if (choice == 2) {
+		current_selected_shape = Shape::RIGHT_LSHAPE;
+		std::copy(std::begin(right_lshape), std::end(right_lshape), std::back_inserter(current_shape_blocks));
+	}
+	else if (choice == 3) {
+		current_selected_shape = Shape::LINE;
+		std::copy(std::begin(line), std::end(line), std::back_inserter(current_shape_blocks));
+	}
+	else if (choice == 4) {
+		current_selected_shape = Shape::TSHAPE;
+		std::copy(std::begin(tshape), std::end(tshape), std::back_inserter(current_shape_blocks));
+	}
+}
+
+bool Shapes::horizontal_collision() {
+
+	for (auto& b : current_shape_blocks) {
+		if (b.get_block_pos().x <= 0|| b.get_block_pos().x > GRID_COLUMNS)
+			return true;
+	}
+
+	return false;
+}
+
+bool Shapes::vertical_collision() {
+
+	for (auto& b : current_shape_blocks) {
+		if (b.get_block_pos().y > GRID_ROWS)
+			return true;
+	}
+
+	return false;
+}
 
 void Shapes::render_shape(SDL_Renderer* renderer) {
 
