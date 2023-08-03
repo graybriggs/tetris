@@ -8,7 +8,7 @@
 
 class Grid;
 
-enum class Shape { SQUARE, LEFT_LSHAPE, RIGHT_LSHAPE, LINE, TSHAPE, };
+enum class Shape { SQUARE, LEFT_LSHAPE, RIGHT_LSHAPE, LINE, TSHAPE, ZLEFT, ZRIGHT };
 
 // technically called Tetromino - geometric shape composed of four squares, connected orthogonally
 class Shapes {
@@ -48,6 +48,8 @@ private:
 	std::vector<Block> right_lshape;
 	std::vector<Block> line;
 	std::vector<Block> tshape;
+	std::vector<Block> zleft;
+	std::vector<Block> zright;
 
 	int rotation_num;
 };

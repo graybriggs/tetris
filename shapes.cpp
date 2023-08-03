@@ -49,7 +49,21 @@ void Shapes::init_blocks() {
 	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(-1, 0)));
 	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(0, 0)));
 	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(1, 0)));
-	
+
+	// left z
+
+	zleft.push_back(Block(Block::BlockColor::CYAN, BlockCoords(-1, 0)));
+	zleft.push_back(Block(Block::BlockColor::CYAN, BlockCoords(0, 0)));
+	zleft.push_back(Block(Block::BlockColor::CYAN, BlockCoords(0, 1)));
+	zleft.push_back(Block(Block::BlockColor::CYAN, BlockCoords(1, 1)));
+
+	// right z
+
+	zright.push_back(Block(Block::BlockColor::WHITE, BlockCoords(-1, 1)));
+	zright.push_back(Block(Block::BlockColor::WHITE, BlockCoords(0, 1)));
+	zright.push_back(Block(Block::BlockColor::WHITE, BlockCoords(0, 0)));
+	zright.push_back(Block(Block::BlockColor::WHITE, BlockCoords(1, 0)));
+
 	get_next_shape();
 }
 
@@ -99,7 +113,8 @@ std::vector<Block> Shapes::get_current_shape() {
 
 void Shapes::get_next_shape() {
 
-	int choice = rand() % 5;
+	current_shape_blocks.clear();
+	int choice = rand() % 7;
 	if (choice == 0) {
 		current_selected_shape = Shape::SQUARE;
 		std::copy(std::begin(square), std::end(square), std::back_inserter(current_shape_blocks));
@@ -119,6 +134,14 @@ void Shapes::get_next_shape() {
 	else if (choice == 4) {
 		current_selected_shape = Shape::TSHAPE;
 		std::copy(std::begin(tshape), std::end(tshape), std::back_inserter(current_shape_blocks));
+	}
+	else if (choice == 5) {
+		current_selected_shape = Shape::ZLEFT;
+		std::copy(std::begin(zleft), std::end(zleft), std::back_inserter(current_shape_blocks));
+	}
+	else if (choice == 6) {
+		current_selected_shape = Shape::ZRIGHT;
+		std::copy(std::begin(zright), std::end(zright), std::back_inserter(current_shape_blocks));
 	}
 }
 
