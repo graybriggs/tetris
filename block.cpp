@@ -8,6 +8,13 @@ Block::Block() :
 {
 }
 
+Block::Block(int x, int y):
+	block_color(BlockColor::EMPTY)
+{
+	block_pos.x = x;
+	block_pos.y = y;
+}
+
 Block::Block(BlockCoords coords) :
 	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
 	block_color(BlockColor::EMPTY)
@@ -83,6 +90,14 @@ void Block::render_block(SDL_Renderer* renderer) {
 		break;
 	case BlockColor::PURPLE:
 		SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+		SDL_RenderFillRect(renderer, &r);
+		break;
+	case BlockColor::CYAN:
+		SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+		SDL_RenderFillRect(renderer, &r);
+		break;
+	case BlockColor::WHITE:
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderFillRect(renderer, &r);
 		break;
 	}

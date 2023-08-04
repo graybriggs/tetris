@@ -10,9 +10,10 @@ public:
 	const int BLOCK_HEIGHT = 40;
 	BlockCoords BLOCK_OFFSET = BlockCoords(5,0);
 	
-	enum class BlockColor { RED, GREEN, BLUE, YELLOW, PURPLE, EMPTY };
+	enum class BlockColor { RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, WHITE, EMPTY };
 
 	Block();
+	Block(int x, int y);
 	Block(BlockCoords);
 	Block(BlockColor block_col, BlockCoords pos);
 
