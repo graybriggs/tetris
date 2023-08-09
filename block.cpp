@@ -2,58 +2,59 @@
 #include "block.h"
 
 Block::Block() :
-	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
-	block_color(BlockColor::EMPTY),
-	block_pos(BLOCK_OFFSET)
-{
-}
-
-Block::Block(int x, int y):
+	block_rect({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
 	block_color(BlockColor::EMPTY)
 {
-	block_pos.x = x;
-	block_pos.y = y;
+	block_rect.x = 0;
+	block_rect.y = 0;
+	block_rect.w = BLOCK_WIDTH;
+	block_rect.h = BLOCK_HEIGHT;
 }
 
-Block::Block(BlockCoords coords) :
-	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
+Block::Block(int xpos, int ypos):
 	block_color(BlockColor::EMPTY)
 {
-	block_pos.x = coords.x + BLOCK_OFFSET.x;
-	block_pos.y = coords.y + BLOCK_OFFSET.y;
+	block_rect.x = xpos + BLOCK_OFFSET_X;
+	block_rect.y = ypos + BLOCK_OFFSET_Y;
+	block_rect.w = BLOCK_WIDTH;
+	block_rect.h = BLOCK_HEIGHT;
 }
 
-Block::Block(BlockColor block_col, BlockCoords coords) :
-	box({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
+
+Block::Block(BlockColor block_col, int xpos, int ypos):
 	block_color(block_col)
 {
-	block_pos.x = coords.x + BLOCK_OFFSET.x;
-	block_pos.y = coords.y + BLOCK_OFFSET.y;
+	block_rect.x = xpos + BLOCK_OFFSET_X;
+	block_rect.y = ypos + BLOCK_OFFSET_Y;
+	block_rect.w = BLOCK_WIDTH;
+	block_rect.h = BLOCK_HEIGHT;
 }
 
 void Block::set_block_color(BlockColor bc) {
 	block_color = bc;
 }
 
-
-
-BlockCoords Block::get_block_pos() {
-	return block_pos;
+Block::BlockColor Block::get_block_color() {
+	return block_color;
 }
 
-void Block::set_block_pos(BlockCoords bc) {
-	block_pos.x = bc.x;
-	block_pos.y = bc.y;
+SDL_Rect Block::get_block_pos() {
+	return block_rect;
 }
+
 
 void Block::set_block_pos(int x, int y) {
-	block_pos.x = x;
-	block_pos.y = y;
+	block_rect.x = x;
+	block_rect.y = y;
+}
+
+Block Block::get_block() {
+	return *this;
 }
 
 bool Block::horizontal_collision() {
 
-	if (block_pos.x < 0 || block_pos.x > 10)
+	if (block_rect.x < 0 || block_rect.x > 10)
 		return true;
 	
 	return false;
@@ -61,7 +62,7 @@ bool Block::horizontal_collision() {
 
 bool Block::vertical_collision() {
 
-	if (block_pos.y > 18)
+	if (block_rect.y > 18)
 		return true;
 
 	return false;
@@ -69,7 +70,7 @@ bool Block::vertical_collision() {
 
 void Block::render_block(SDL_Renderer* renderer) {
 
-	SDL_Rect r = { block_pos.x * BLOCK_WIDTH, block_pos.y * BLOCK_HEIGHT, BLOCK_WIDTH, BLOCK_HEIGHT };
+	SDL_Rect r = { block_rect.x * BLOCK_WIDTH, block_rect.y * BLOCK_HEIGHT, BLOCK_WIDTH, BLOCK_HEIGHT };
 
 	switch (block_color) {
 	case BlockColor::RED:

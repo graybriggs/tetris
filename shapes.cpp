@@ -16,53 +16,52 @@ void Shapes::init_blocks() {
 
 	// Square - 0 rotations
 
-	square.push_back(Block(Block::BlockColor::GREEN, BlockCoords(-1, -1)));
-	square.push_back(Block(Block::BlockColor::GREEN, BlockCoords(0, -1)));
-	square.push_back(Block(Block::BlockColor::GREEN, BlockCoords(-1, 0)));
-	square.push_back(Block(Block::BlockColor::GREEN, BlockCoords(0, 0)));
+	square.push_back(Block(Block::BlockColor::GREEN, -1, -1));
+	square.push_back(Block(Block::BlockColor::GREEN, 0, -1));
+	square.push_back(Block(Block::BlockColor::GREEN, -1, 0));
+	square.push_back(Block(Block::BlockColor::GREEN, 0, 0));
 
 	// left l-shape - 4 rotations
 
-	left_lshape.push_back(Block(Block::BlockColor::YELLOW, BlockCoords(0, -1)));
-	left_lshape.push_back(Block(Block::BlockColor::YELLOW, BlockCoords(0, 0)));
-	left_lshape.push_back(Block(Block::BlockColor::YELLOW, BlockCoords(0, 1)));
-	left_lshape.push_back(Block(Block::BlockColor::YELLOW, BlockCoords(-1, 1)));
+	left_lshape.push_back(Block(Block::BlockColor::YELLOW, 0, -1));
+	left_lshape.push_back(Block(Block::BlockColor::YELLOW, 0, 0));
+	left_lshape.push_back(Block(Block::BlockColor::YELLOW, 0, 1));
+	left_lshape.push_back(Block(Block::BlockColor::YELLOW, -1, 1));
 
 	// right l-shape - 4 rotations
 
-
-	right_lshape.push_back(Block(Block::BlockColor::RED, BlockCoords(-1, -1)));
-	right_lshape.push_back(Block(Block::BlockColor::RED, BlockCoords(-1, 0)));
-	right_lshape.push_back(Block(Block::BlockColor::RED, BlockCoords(-1, 1)));
-	right_lshape.push_back(Block(Block::BlockColor::RED, BlockCoords(0, 1)));
+	right_lshape.push_back(Block(Block::BlockColor::RED, -1, -1));
+	right_lshape.push_back(Block(Block::BlockColor::RED, -1, 0));
+	right_lshape.push_back(Block(Block::BlockColor::RED, -1, 1));
+	right_lshape.push_back(Block(Block::BlockColor::RED, 0, 1));
 
 	// line - 2 rotations
 
-	line.push_back(Block(Block::BlockColor::PURPLE, BlockCoords(0, -1)));
-	line.push_back(Block(Block::BlockColor::PURPLE, BlockCoords(0, 0)));
-	line.push_back(Block(Block::BlockColor::PURPLE, BlockCoords(0, 1)));
-	line.push_back(Block(Block::BlockColor::PURPLE, BlockCoords(0, 2)));
+	line.push_back(Block(Block::BlockColor::PURPLE, 0, -1));
+	line.push_back(Block(Block::BlockColor::PURPLE, 0, 0));
+	line.push_back(Block(Block::BlockColor::PURPLE, 0, 1));
+	line.push_back(Block(Block::BlockColor::PURPLE, 0, 2));
 
 	// T-shape - 4 rotations
 
-	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(0, -1)));
-	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(-1, 0)));
-	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(0, 0)));
-	tshape.push_back(Block(Block::BlockColor::BLUE, BlockCoords(1, 0)));
+	tshape.push_back(Block(Block::BlockColor::BLUE, 0, -1));
+	tshape.push_back(Block(Block::BlockColor::BLUE, -1, 0));
+	tshape.push_back(Block(Block::BlockColor::BLUE, 0, 0));
+	tshape.push_back(Block(Block::BlockColor::BLUE, 1, 0));
 
 	// left z
 
-	zleft.push_back(Block(Block::BlockColor::CYAN, BlockCoords(-1, 0)));
-	zleft.push_back(Block(Block::BlockColor::CYAN, BlockCoords(0, 0)));
-	zleft.push_back(Block(Block::BlockColor::CYAN, BlockCoords(0, 1)));
-	zleft.push_back(Block(Block::BlockColor::CYAN, BlockCoords(1, 1)));
+	zleft.push_back(Block(Block::BlockColor::CYAN, -1, 0));
+	zleft.push_back(Block(Block::BlockColor::CYAN, 0, 0));
+	zleft.push_back(Block(Block::BlockColor::CYAN, 0, 1));
+	zleft.push_back(Block(Block::BlockColor::CYAN, 1, 1));
 
 	// right z
 
-	zright.push_back(Block(Block::BlockColor::WHITE, BlockCoords(-1, 1)));
-	zright.push_back(Block(Block::BlockColor::WHITE, BlockCoords(0, 1)));
-	zright.push_back(Block(Block::BlockColor::WHITE, BlockCoords(0, 0)));
-	zright.push_back(Block(Block::BlockColor::WHITE, BlockCoords(1, 0)));
+	zright.push_back(Block(Block::BlockColor::WHITE, -1, 1));
+	zright.push_back(Block(Block::BlockColor::WHITE, 0, 1));
+	zright.push_back(Block(Block::BlockColor::WHITE, 0, 0));
+	zright.push_back(Block(Block::BlockColor::WHITE, 1, 0));
 
 	get_next_shape();
 }
@@ -71,9 +70,9 @@ void Shapes::move_down() {
 	
 	if (!vertical_collision()) {
 		for (auto& b : current_shape_blocks) {
-			BlockCoords bc = b.get_block_pos();
+			SDL_Rect bc = b.get_block_pos();
 			bc.y++;
-			b.set_block_pos(bc);
+			b.set_block_pos(bc.x, bc.y);
 		}
 	}
 	else {
@@ -86,9 +85,9 @@ void Shapes::move_horizontal(int amount) {
 	
 	if (!horizontal_collision()) {
 		for (auto& b : current_shape_blocks) {
-			BlockCoords bc = b.get_block_pos();
+			SDL_Rect bc = b.get_block_pos();
 			bc.x += amount;
-			b.set_block_pos(bc);
+			b.set_block_pos(bc.x, bc.y);
 		}
 	}
 }
@@ -148,7 +147,7 @@ void Shapes::get_next_shape() {
 bool Shapes::horizontal_collision() {
 
 	for (auto& b : current_shape_blocks) {
-		if (b.get_block_pos().x <= 0|| b.get_block_pos().x > GRID_COLUMNS)
+		if (b.get_block_pos().x <= 0|| b.get_block_pos().x >= GRID_COLUMNS - 1)
 			return true;
 	}
 

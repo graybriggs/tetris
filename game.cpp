@@ -13,7 +13,7 @@ Game::Game() {
 	grid = std::make_unique<Grid>();
 	current_shape = std::make_unique<Shapes>();	
 
-	vertical_timer = std::make_unique<Timer>(std::bind(&Shapes::move_down, current_shape.get()), 1000, true);
+	vertical_timer = std::make_unique<Timer>(std::bind(&Shapes::move_down, current_shape.get()), 100, true);
 	horizontal_timer = std::make_unique<Timer>(nullptr, 200, false);
 }
 
@@ -55,16 +55,29 @@ void Game::update(float dt) {
 	vertical_timer->update();
 	horizontal_timer->update();
 
-	std::vector<Block> sh = current_shape->get_current_shape();
-	for (Block b : sh) {
+	/*
+	for (auto sh : current_shape.get()->get_current_shape()) {
+		if (sh.vertical_collision()) {
+			// update grid with shape.
+			for (int i = 0; i < 4; ++i) {
+				SDL_Rect r = sh.get_block_pos();
+				//grid[bc.x][bc.y] = Block(sh.get_block());
+				//grid->insert_grid(r.x, r.y, Block(sh.get_block()));
 
+			}
+		}
 	}
+	*/
+	
 }
 
 void Game::render(SDL_Renderer* renderer) {
 
-	grid->render_blocks(renderer);
+	grid->render_grid_blocks(renderer);
 	current_shape->render_shape(renderer);
-	grid->render_grid(renderer);
+	grid->render_grid_outline(renderer);
+	//grid->render_blocks(renderer);
+	
+
 
 }
