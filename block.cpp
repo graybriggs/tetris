@@ -5,29 +5,39 @@ Block::Block() :
 	block_rect({ 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT }),
 	block_color(BlockColor::EMPTY)
 {
-	block_rect.x = 0;
-	block_rect.y = 0;
-	block_rect.w = BLOCK_WIDTH;
-	block_rect.h = BLOCK_HEIGHT;
+	block_rect = { .x = 0, .y = 0, .w = BLOCK_WIDTH, .h = BLOCK_HEIGHT };
 }
 
 Block::Block(int xpos, int ypos):
 	block_color(BlockColor::EMPTY)
 {
-	block_rect.x = xpos + BLOCK_OFFSET_X;
-	block_rect.y = ypos + BLOCK_OFFSET_Y;
-	block_rect.w = BLOCK_WIDTH;
-	block_rect.h = BLOCK_HEIGHT;
+	block_rect = {
+		.x = xpos + BLOCK_OFFSET_X,
+		.y = ypos + BLOCK_OFFSET_Y,
+		.w = BLOCK_WIDTH,
+		.h = BLOCK_HEIGHT
+	};
 }
 
 
 Block::Block(BlockColor block_col, int xpos, int ypos):
 	block_color(block_col)
 {
-	block_rect.x = xpos + BLOCK_OFFSET_X;
-	block_rect.y = ypos + BLOCK_OFFSET_Y;
-	block_rect.w = BLOCK_WIDTH;
-	block_rect.h = BLOCK_HEIGHT;
+	block_rect = {
+		.x = xpos + BLOCK_OFFSET_X,
+		.y = ypos + BLOCK_OFFSET_Y,
+		.w = BLOCK_WIDTH,
+		.h = BLOCK_HEIGHT
+	};
+}
+
+Block& Block::operator=(const Block& rhs) {
+	Block b;
+	posx = rhs.posx;
+	posy = rhs.posy;
+	block_color = rhs.block_color;
+	block_rect = rhs.block_rect;
+	return b;
 }
 
 void Block::set_block_color(BlockColor bc) {
@@ -62,7 +72,7 @@ bool Block::horizontal_collision() {
 
 bool Block::vertical_collision() {
 
-	if (block_rect.y > 18)
+	if (block_rect.y >= 15)
 		return true;
 
 	return false;
